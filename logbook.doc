@@ -1,0 +1,114 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>Development Logbook</title>
+    <style>
+        body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; line-height: 1.5; }
+        h1 { font-size: 16pt; color: #2F5496; border-bottom: 1px solid #2F5496; padding-bottom: 4px; }
+        h2 { font-size: 14pt; color: #2F5496; margin-top: 20px; }
+        h3 { font-size: 12pt; color: #1F3763; margin-top: 15px; }
+        hr { border: 0; border-top: 1px solid #ccc; margin: 20px 0; }
+        ul { margin-bottom: 15px; }
+        li { margin-bottom: 5px; }
+        code { background-color: #f4f4f4; padding: 2px 4px; font-family: 'Courier New', Courier, monospace; }
+    </style>
+</head>
+<body>
+
+<h1>Development Logbook: Advanced Web Design &amp; Development</h1>
+<p>
+    <strong>Course:</strong> BIT3208<br>
+    <strong>Project:</strong> Student Portal &amp; Management System
+</p>
+
+<hr>
+
+<h2>Week 6: Database Integration and CRUD Operations</h2>
+
+<h3>Overview</h3>
+<p>This week focused on connecting our web application to a MySQL database to securely store, retrieve, update, and delete records—forming the foundation of our Student Portal.</p>
+
+<h3>Activities &amp; Implementation</h3>
+<ol>
+    <li><strong>Database Connection &amp; Initialization (<code>db.php</code>, <code>index.php</code>)</strong>
+        <ul>
+            <li>Configured the MySQL connection parameters (<code>localhost</code>, <code>root</code>, <code>studentportal</code>).</li>
+            <li>Implemented an automated setup script in <code>index.php</code> that dynamically creates the database and the necessary tables (<code>users</code>, <code>students</code>, <code>units</code>, <code>student_units</code>) if they do not exist.</li>
+        </ul>
+    </li>
+    <li><strong>Create (C) - Adding Records (<code>add_student.php</code>)</strong>
+        <ul>
+            <li>Built a secure HTML form to capture student details (Full Name, Email, Course).</li>
+            <li>Used PHP to sanitize inputs using <code>mysqli_real_escape_string</code> and executed an <code>INSERT INTO</code> SQL query to save records into the <code>students</code> table.</li>
+        </ul>
+    </li>
+    <li><strong>Read (R) - Displaying Records (<code>view_students.php</code>)</strong>
+        <ul>
+            <li>Executed a <code>SELECT * FROM students</code> query.</li>
+            <li>Dynamically generated an HTML table using a <code>while</code> loop with <code>mysqli_fetch_assoc()</code> to display all registered students in a formatted, user-friendly view.</li>
+        </ul>
+    </li>
+    <li><strong>Update (U) - Editing Records (<code>edit_student.php</code>)</strong>
+        <ul>
+            <li>Allowed users to click "Edit" on a specific record, passing the student's ID via the URL (<code>GET</code> request).</li>
+            <li>Pre-filled a form with the existing data and utilized an <code>UPDATE</code> SQL statement to apply modifications.</li>
+        </ul>
+    </li>
+    <li><strong>Delete (D) - Removing Records (<code>delete_student.php</code>)</strong>
+        <ul>
+            <li>Created a backend script that takes a student ID and runs a <code>DELETE FROM students WHERE id = ?</code> query to remove the record permanently.</li>
+        </ul>
+    </li>
+</ol>
+
+<hr>
+
+<h2>Week 7: User Authentication and Session Management</h2>
+
+<h3>Overview</h3>
+<p>This week focused on securing the application. We implemented a comprehensive Multi-User Authentication System supporting Admin, Lecturer, and Student roles with strict access controls.</p>
+
+<h3>Activities &amp; Implementation</h3>
+<ol>
+    <li><strong>Secure User Registration (<code>register.php</code>)</strong>
+        <ul>
+            <li>Created a registration form allowing users to select their specific role (<code>Admin</code>, <code>Lecturer</code>, or <code>Student</code>).</li>
+            <li><strong>Security Practice:</strong> Implemented <code>password_hash()</code> with <code>PASSWORD_DEFAULT</code> to ensure passwords are encrypted before being stored in the database.</li>
+        </ul>
+    </li>
+    <li><strong>Login System (<code>login.php</code>)</strong>
+        <ul>
+            <li>Built an authentication script that searches for a user's email.</li>
+            <li>Utilized <code>password_verify()</code> to cross-check the submitted plain-text password against the hashed password in the database.</li>
+        </ul>
+    </li>
+    <li><strong>Session Management (<code>session_start()</code>)</strong>
+        <ul>
+            <li>Upon successful login, the system securely stores the user's <code>user_id</code>, <code>fullname</code>, and <code>role</code> inside the <code>$_SESSION</code> superglobal to remember them across pages.</li>
+        </ul>
+    </li>
+    <li><strong>Protected Pages &amp; Role-Based Access Control (RBAC)</strong>
+        <ul>
+            <li><strong>Dashboard Segregation (<code>dashboard.php</code>):</strong> Conditionally rendered UI elements. Students see "Available Units" and "My Registered Units", while Admins/Lecturers see "Manage Students" and "Manage Units".</li>
+            <li><strong>Backend Lockdown:</strong> Added strict session checks at the top of pages like <code>add_student.php</code> and <code>delete_student.php</code> to forcibly redirect any unauthorized users (like a Student trying to view the student list).</li>
+        </ul>
+    </li>
+    <li><strong>Logout Functionality (<code>logout.php</code>)</strong>
+        <ul>
+            <li>Created a secure exit point that uses <code>session_unset()</code> and <code>session_destroy()</code> to wipe the temporary user data and redirect back to the login screen.</li>
+        </ul>
+    </li>
+    <li><strong>Advanced Feature Implementation: Unit Registration</strong>
+        <ul>
+            <li>Applied week 6 &amp; 7 knowledge to build a relational Unit Registration system (<code>available_units.php</code> and <code>my_units.php</code>) specifically tailored for the <code>Student</code> role.</li>
+        </ul>
+    </li>
+</ol>
+
+<hr>
+
+<h2>Weekly Reflection Summary</h2>
+<p>Through Weeks 6 and 7, the application evolved from a static interface into a highly dynamic, data-driven, and secure system. We successfully applied CRUD operations to manage records, and leveraged password hashing and sessions to ensure that sensitive operations remain exclusively in the hands of authorized administrators and lecturers.</p>
+
+</body>
+</html>
